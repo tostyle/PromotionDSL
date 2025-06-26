@@ -188,12 +188,13 @@ ehthumbs_vista.db
 .antlr/
 *.tokens
 *.interp
-*Lexer.cs
-*Parser.cs
-*BaseListener.cs
-*BaseVisitor.cs
-*Listener.cs
-*Visitor.cs
+PromotionDSL/Generated
+# *Lexer.cs
+# *Parser.cs
+# *BaseListener.cs
+# *BaseVisitor.cs
+# *Listener.cs
+# *Visitor.cs
 
 # But keep the grammar files
 !*.g4
