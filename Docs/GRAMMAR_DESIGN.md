@@ -1,30 +1,75 @@
-I declare dsl language like this want u to help me design grammar in antlr
-I will explain overall of this
+# Promotion condition example
+1. 
+conditions if item match with sku
+rewards decreate price as percentage or amount
+2. 
+conditions if item match with sku
+rewards decrease lowest item price 50 percent of price
 
-it like yaml files but with some reserve keyword
+3. 
+conditions if item match with sku
+rewards decrease item price by items 20%, 10%, 5% consecutively order item by lowest price
 
-1. promotion as top level as prmotion name
-conditions as promo condition array
-rewards as reward array of promotion
+# Draft 1
 
-2. condition will format like this
-<condition-name> at start of line and then  <function> <function-argument>  possible to has <expression> and can recursively descending expression start from  <function>
-
-3. reward section
-can start with condition with matching name from <condition-name> from condition section and then <function> and like normal functiob with some expression
-
---- 
-I never write grammar before if u need any more information plz tell me what u want just generate start up grammar first 
-
-
----
-Example
+- separate conditions and rewards section
+- yaml style
 ```yaml
-promotion: "promo 7/7 all day"
-conditions:
-    - A any minimumSpending config.minAmount && minimumQuantity config.minQuantity
-    - B any item.sku = config.sku && item.quantity > config.minQuantity
-rewards:
-    - condition A select discountAmount config.discountAmount
-    - condition B select discountPercent config.discountPercentage
+config:
+    minQuantity: 1
+    minAmount: 500
+    sku: "product1"
+promotion:
+    name: "promo 7/7 all day"
+    conditions:
+        - A any minimumSpending config.minAmount && minimumQuantity config.minQuantity
+        - B any item.sku = config.sku && item.quantity > config.minQuantity
+    # condition_expression: A || B
+    rewards:
+        - condition A select discountAmount config.discountAmount
+        - condition B select discountPercent config.discountPercentage
+```
+
+# Draft 2
+- yaml style with array of object pattern
+```yaml
+promotion
+    name: "promo 7/7 all day"
+    conditions:
+        - name: A
+          expression: any item.sku = config.sku && item.quantity > config.minQuantity
+    rewards:
+        - condition: A 
+          expression: select discountAmount config.discountAmount
+```
+
+# Draft 3
+- lua +  kotlin style
+
+```lua
+promotion {
+    name "promo 7/7 all day"
+    conditions {
+        A minimumSpending config.minAmount && minimumQuantity config.minQuantity,
+        B any item.sku = config.sku && item.quantity > config.minQuantity
+    }
+    rewards {
+       condition A select discountAmount config.discountAmount,
+       condition B select discountPercent config.discountPercentage
+    }
+}
+```
+
+# Draft 4
+- sql style
+```sql
+PROMOTION "7/7 All Day"
+WHERE
+    any(minimumSpending, config.minAmount) as A 
+    AND minimumQuantity >= config.minQuantity as B
+    OR (item.sku = config.sku AND item.quantity > config.minQuantity) as C
+REWARD
+    A discount_percentage = config.discountPercent
+    B discount_amount = config.discountAmount
+END
 ```

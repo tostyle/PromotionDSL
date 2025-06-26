@@ -304,6 +304,17 @@ namespace PromotionEngine.Domain
             return null;
         }
 
+        public override object VisitProgram(PromotionParser.ProgramContext context)
+        {
+            // The program rule contains a promotionDef, so visit that
+            if (context.promotionDef() != null)
+            {
+                return Visit(context.promotionDef());
+            }
+
+            throw new InvalidOperationException("Program context does not contain a promotion definition");
+        }
+
         private string CleanString(string? input)
         {
             if (string.IsNullOrEmpty(input))
