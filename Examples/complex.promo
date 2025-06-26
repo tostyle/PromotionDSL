@@ -1,0 +1,9 @@
+promotion: "Complex Holiday Promotion"
+conditions:
+- A any minimumSpending config.minAmount && minimumQuantity config.minQuantity
+- B any item.sku = config.targetSku && item.quantity >= config.minTargetQuantity
+- C all totalAmount config.premiumThreshold
+rewards:
+- condition A select discountPercentage config.standardDiscount
+- condition B select freeItem config.bonusProduct
+- condition C select discountAmount config.premiumDiscount

@@ -1,0 +1,7 @@
+promotion: "Basic Promo"
+conditions:
+- A any minimumSpending config.minAmount && minimumQuantity config.minQuantity
+- B any item.sku = config.sku
+rewards:
+- condition A select discount config.discountPercent
+- condition B select freeItem config.freeProduct

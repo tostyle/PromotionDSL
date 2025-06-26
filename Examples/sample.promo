@@ -1,0 +1,9 @@
+promotion: "Sample Promo"
+conditions:
+- A any minimumSpending config.minAmount && minimumQuantity config.minQuantity
+- B any item.sku = config.sku && item.quantity > config.minQuantity
+- C all totalAmount config.threshold
+rewards:
+- condition A select discountAmount config.discountAmount
+- condition B select discountPercent config.discountPercentage
+- condition C select givePoints config.pointsMultiplier

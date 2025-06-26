@@ -1,0 +1,5 @@
+promotion: "Simple Test"
+conditions:
+- A any minimumSpending config.minAmount
+rewards:
+- condition A discount percentage config.discountPercent
